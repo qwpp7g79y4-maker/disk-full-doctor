@@ -1,0 +1,3 @@
+Invented fixture for disk-full-doctor.
+This tree is not a live system.
+It has no procfs, journals, or Docker directories.

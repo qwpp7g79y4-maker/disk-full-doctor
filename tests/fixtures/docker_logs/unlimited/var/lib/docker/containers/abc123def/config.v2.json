@@ -1,0 +1,8 @@
+{
+  "HostConfig": {
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    }
+  }
+}

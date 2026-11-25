@@ -1,0 +1,61 @@
+.TH DISK-FULL-DOCTOR 1 "2026-11-01" "disk-full-doctor 0.1.0" "User Commands"
+.SH NAME
+disk-full-doctor \- read-only report of why a disk looks full when df and du disagree
+.SH SYNOPSIS
+.B disk-full-doctor
+.RB "[ " --json " ]"
+.SH DESCRIPTION
+disk-full-doctor prints one read-only report for "No space left on device"
+when df and du disagree.
+The report is sorted by bytes.
+It checks deleted_open (deleted-but-open files via /proc/<pid>/fd),
+inodes (inode use per mount),
+docker_logs (Docker json-file container logs and a missing max-size),
+journald (size of /var/log/journal and /run/log/journal, and SystemMaxUse
+when journald.conf is readable),
+buildkit (Docker BuildKit cache and an external buildkitd cache),
+and df_du_gap (per mount, statvfs used bytes next to a du-style sum,
+and the gap).
+Each finding reports bytes or inodes, one line of evidence, and a short hint.
+The tool never deletes, writes, or changes anything, and it never touches
+the Docker socket or CLI, lsof, or journalctl.
+Without permission to read a path, a check reports NeedsRoot with a
+plain-text hint.
+The report ends with a summary line naming every check that needs root
+to see more.
+.SH OPTIONS
+.TP
+.B --json
+Print the report as JSON.
+.TP
+.BR -h ", " --help
+Print help.
+.TP
+.BR -V ", " --version
+Print version.
+.SH EXIT STATUS
+.TP
+.B 0
+Nothing actionable was found.
+No finding has status Warn, NeedsRoot, or Error.
+.TP
+.B 1
+A check reported Warn, NeedsRoot, or Error.
+The program also exits 1 when it rejects a path before printing the report.
+.TP
+.B 2
+The command line was rejected.
+.SH EXAMPLES
+Text report:
+.PP
+.B disk-full-doctor
+.PP
+JSON report:
+.PP
+.B disk-full-doctor --json
+.PP
+Help and version:
+.PP
+.B disk-full-doctor --help
+.PP
+.B disk-full-doctor --version
