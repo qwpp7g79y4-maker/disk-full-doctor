@@ -6,13 +6,17 @@
 //! a closed descriptor 1 as `/dev/null` before `main`, so the binary records the
 //! state in a constructor that runs earlier.
 
+#[cfg(unix)]
 use std::path::PathBuf;
+#[cfg(unix)]
 use std::process::{Command, Output};
 
+#[cfg(unix)]
 fn fixture() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures/empty")
 }
 
+#[cfg(unix)]
 /// Runs the binary through `sh` so the redirection happens before `exec`.
 fn run_with_stdout(redirect: &str) -> Output {
     Command::new("sh")
@@ -24,6 +28,7 @@ fn run_with_stdout(redirect: &str) -> Output {
         .expect("run sh")
 }
 
+#[cfg(unix)]
 #[test]
 fn dev_null_stays_exit_0() {
     let output = run_with_stdout(">/dev/null");
@@ -31,6 +36,7 @@ fn dev_null_stays_exit_0() {
     assert!(output.stderr.is_empty(), "{output:?}");
 }
 
+#[cfg(target_os = "linux")]
 #[test]
 fn full_stdout_is_exit_2_without_a_panic() {
     let output = run_with_stdout(">/dev/full");
