@@ -16,6 +16,11 @@ change these results.
 | `cargo clippy --all-targets --locked -- -D warnings` | pass, exit 0, no warnings |
 | `cargo test --locked` | pass, exit 0: 105 passed, 0 failed, 0 ignored |
 | `cargo test --release --locked` | pass, exit 0: 105 passed, 0 failed, 0 ignored |
+| `cargo +1.85 fmt --check` | pass, exit 0 |
+| `cargo +1.85 clippy --all-targets --locked -- -D warnings` | pass, exit 0, no warnings |
+| `cargo +1.85 test --locked` | pass, exit 0: 105 passed, 0 failed, 0 ignored |
+
+The three `+1.85` rows were measured on 2026-11-25 on Linux with `cargo 1.85.1`, on the same code (tip `4d37022` of branch `kwaliteit`, which only adds documentation and metadata after `4e8eb69`). `cargo +1.85 test --release --locked` was not run.
 
 The 105 tests are 28 in the library, 5 in the binary, and 72 in the
 integration tests under `tests/` (branches 31, cli 10, docker_logs 8,
@@ -44,7 +49,7 @@ These were not run for this measurement. Their result is unknown here.
 - `cargo package` check at this commit: not run.
 - `cargo audit`: not run.
 - `cargo deny check licenses`: not run.
-- Build with the minimum Rust version 1.85: not run.
+- `cargo +1.85 test --release --locked`: not run.
 - Tests on Windows and macOS: not run. This commit only gates `tests/stdout_closed.rs` by `cfg` (`unix`, `target_os = "linux"`) so Windows can build it; that is not confirmed on Windows.
 - Result of the GitHub CI jobs for this commit: not run, not read.
 - Fuzzing, mutation testing, and coverage: not run.

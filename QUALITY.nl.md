@@ -16,6 +16,11 @@ uitkomsten niet.
 | `cargo clippy --all-targets --locked -- -D warnings` | geslaagd, exit 0, geen waarschuwingen |
 | `cargo test --locked` | geslaagd, exit 0: 105 geslaagd, 0 mislukt, 0 genegeerd |
 | `cargo test --release --locked` | geslaagd, exit 0: 105 geslaagd, 0 mislukt, 0 genegeerd |
+| `cargo +1.85 fmt --check` | geslaagd, exit 0 |
+| `cargo +1.85 clippy --all-targets --locked -- -D warnings` | geslaagd, exit 0, geen waarschuwingen |
+| `cargo +1.85 test --locked` | geslaagd, exit 0: 105 geslaagd, 0 mislukt, 0 genegeerd |
+
+De drie `+1.85`-rijen zijn gemeten op 2026-11-25 op Linux met `cargo 1.85.1`, op dezelfde code (tip `4d37022` van tak `kwaliteit`, die na `4e8eb69` alleen documentatie en metadata toevoegt). `cargo +1.85 test --release --locked` is niet uitgevoerd (not run).
 
 De 105 tests zijn 28 in de bibliotheek, 5 in het programma en 72 in de
 integratietests onder `tests/` (branches 31, cli 10, docker_logs 8, buildkit 3,
@@ -44,7 +49,7 @@ Dit is voor deze meting niet gedraaid (not run). De uitkomst is hier onbekend.
 - `cargo package`-controle op deze commit: niet uitgevoerd (not run).
 - `cargo audit`: niet uitgevoerd (not run).
 - `cargo deny check licenses`: niet uitgevoerd (not run).
-- Bouwen met de minimale Rust-versie 1.85: niet uitgevoerd (not run).
+- `cargo +1.85 test --release --locked`: niet uitgevoerd (not run).
 - Tests op Windows en macOS: niet uitgevoerd (not run). Deze commit zet `tests/stdout_closed.rs` alleen achter `cfg` (`unix`, `target_os = "linux"`) zodat Windows hem kan bouwen; dat is niet op Windows bevestigd.
 - Uitkomst van de GitHub-CI-jobs voor deze commit: niet uitgevoerd, niet gelezen (not run).
 - Fuzzen, mutatietests en dekking: niet uitgevoerd (not run).
