@@ -166,7 +166,7 @@ fn example_command_exits_as_documented() {
     let args: Vec<&str> = parts.collect();
 
     let root = example_root(&args);
-    assert_ne!(root, Path::new("/"));
+    assert_ne!(Path::new(root), Path::new("/"));
     let root = manifest().join(root);
     assert!(root.is_dir(), "missing example tree {}", root.display());
     let canonical = root.canonicalize().expect("canonicalize example tree");

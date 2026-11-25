@@ -2,9 +2,11 @@
 //!
 //! Nothing here passes `--root /` or reads the host `/proc`.
 
+#[cfg(target_os = "linux")]
 use std::ffi::OsString;
 use std::fs;
 use std::io;
+#[cfg(target_os = "linux")]
 use std::os::unix::ffi::OsStringExt;
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
@@ -323,6 +325,7 @@ fn docker_without_a_containers_dir_has_no_logs() {
     assert!(finding.evidence.contains("no json-file container logs"));
 }
 
+#[cfg(target_os = "linux")]
 #[test]
 fn docker_skips_non_dirs_symlink_logs_and_non_utf8_names() {
     let temp = TempRoot::new("docker-skips");
@@ -697,6 +700,7 @@ fn df_ignores_symlinks_sockets_and_missing_mount_dirs() {
     assert!(gone.evidence.contains("du 0 bytes"), "{}", gone.evidence);
 }
 
+#[cfg(target_os = "linux")]
 #[test]
 fn deleted_open_skips_entries_that_are_not_deleted_files() {
     let temp = TempRoot::new("deleted-skips");
