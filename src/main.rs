@@ -2,7 +2,7 @@
 
 #![forbid(unsafe_code)]
 
-use std::io::ErrorKind;
+use std::io::{ErrorKind, Write};
 use std::path::PathBuf;
 use std::process::ExitCode;
 
@@ -33,7 +33,10 @@ fn main() -> ExitCode {
     };
     let probe = RealFsProbe;
     let report = scan(&root, &probe);
-    print_report(&report, cli.json);
+    if let Err(err) = print_report(&report, cli.json) {
+        eprintln!("disk-full-doctor: cannot write the report to standard output: {err}");
+        return ExitCode::from(2);
+    }
     ExitCode::from(report.exit_code() as u8)
 }
 
@@ -54,12 +57,15 @@ fn root_from_cli(path: Option<PathBuf>) -> Result<Root, String> {
     }
 }
 
-fn print_report(report: &Report, json: bool) {
-    if json {
-        print!("{}", report.render_json());
+fn print_report(report: &Report, json: bool) -> std::io::Result<()> {
+    let text = if json {
+        report.render_json()
     } else {
-        print!("{}", report.render_text());
-    }
+        report.render_text()
+    };
+    let mut out = std::io::stdout().lock();
+    out.write_all(text.as_bytes())?;
+    out.flush()
 }
 
 #[cfg(test)]

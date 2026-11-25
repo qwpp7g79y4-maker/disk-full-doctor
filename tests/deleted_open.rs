@@ -66,7 +66,29 @@ fn chmod_tree(path: &Path, mode: u32) {
 
 #[test]
 fn fixture_reports_deleted_fd_bytes_and_pid() {
-    let root = Root::new(fixture("deleted_open"));
+    // The fd symlinks are made here: `cargo package` would turn committed
+    // symlinks into regular files.
+    let temp = TempRoot::new("deleted-fixture");
+    let source = fixture("deleted_open");
+    let payload = temp.path().join("payload");
+    fs::create_dir_all(&payload).expect("payload dir");
+    for name in ["app.log (deleted)", "keep.log"] {
+        fs::copy(source.join("payload").join(name), payload.join(name)).expect("copy payload");
+    }
+    let fd_dir = temp.path().join("proc/424242/fd");
+    fs::create_dir_all(&fd_dir).expect("fd dir");
+    fs::create_dir_all(temp.path().join("proc/not-a-pid")).expect("not-a-pid dir");
+    fs::copy(
+        source.join("proc/not-a-pid/note"),
+        temp.path().join("proc/not-a-pid/note"),
+    )
+    .expect("copy note");
+    std::os::unix::fs::symlink("../../../payload/app.log (deleted)", fd_dir.join("3"))
+        .expect("deleted fd link");
+    std::os::unix::fs::symlink("../../../payload/keep.log", fd_dir.join("4"))
+        .expect("kept fd link");
+
+    let root = Root::new(temp.path());
     let report = scan(&root, &RejectProbe);
     let warns: Vec<_> = report
         .findings
