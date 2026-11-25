@@ -2,8 +2,8 @@
 
 [English](QUALITY.md) | Nederlands
 
-Gemeten staat van commit `256738a` (volledige hash
-`256738adf20b2ecfaaa887405a2792c6926082c6`), gemeten op 2026-11-25 op Linux
+Gemeten staat van commit `4e8eb69` (volledige hash
+`4e8eb69554b990703509237ab00820c2e2c4cdb5`), gemeten op 2026-11-25 op Linux
 met Rust 1.99.0 (`cargo 1.99.0`, `rustc 1.99.0`). De werkmap was schoon op die
 commit. Latere commits die alleen documentatie wijzigen veranderen deze
 uitkomsten niet.
@@ -32,7 +32,7 @@ niet herhaald.
 | Gat | Uitkomst |
 | --- | --- |
 | Mislukt schrijven naar standaarduitvoer | Echt. `>/dev/full` gaf een panic met exit 101. Gesloten in `555e8c2`: exit 2, geen panic (`tests/stdout_closed.rs`). `/dev/null` blijft exit 0. |
-| Gesloten standaarduitvoer bij de start | Echt. De Rust-runtime heropent een gesloten descriptor 1 als `/dev/null` vóór `main`, dus een gesloten stroom gaf exit 0. Gesloten in deze commit, alleen Linux: een constructor in het programma (`src/stdout_probe.rs`, de enige `unsafe`-code, één `allow` in `src/main.rs`) legt de staat eerder vast. `>&-` geeft nu exit 2 met een melding; `/dev/null` blijft exit 0 (`tests/stdout_closed.rs`, rood vóór de fix). De bibliotheek verbiedt `unsafe` nog steeds. Andere platformen vallen erbuiten. |
+| Gesloten standaarduitvoer bij de start | Echt. De Rust-runtime heropent een gesloten descriptor 1 als `/dev/null` vóór `main`, dus een gesloten stroom gaf exit 0. Gesloten in `256738a`, alleen Linux: een constructor in het programma (`src/stdout_probe.rs`, de enige `unsafe`-code, één `allow` in `src/main.rs`) legt de staat eerder vast. `>&-` geeft nu exit 2 met een melding; `/dev/null` blijft exit 0 (`tests/stdout_closed.rs`, rood vóór de fix). De bibliotheek verbiedt `unsafe` nog steeds. Andere platformen vallen erbuiten. |
 | `--output` volgt een geplante symlink of vervangt een speciaal bestand | Niet van toepassing. Er is geen `--output`-optie. |
 | Uitgepakt crate faalt een test | Echt. `cargo package` maakte van de vastgelegde fd-symlinks gewone bestanden, waardoor de deleted_open-test in het uitgepakte crate faalde. Gesloten: de test maakt de symlinks tijdens het draaien (`tests/package_fixtures.rs` bewaakt dit). Er ontbrak geen bestand in het pakket. |
 | `build.rs` leest `.git/HEAD` en faalt in een worktree | Niet van toepassing. Er is geen `build.rs`. |
@@ -45,7 +45,7 @@ Dit is voor deze meting niet gedraaid (not run). De uitkomst is hier onbekend.
 - `cargo audit`: niet uitgevoerd (not run).
 - `cargo deny check licenses`: niet uitgevoerd (not run).
 - Bouwen met de minimale Rust-versie 1.85: niet uitgevoerd (not run).
-- Tests op Windows en macOS: niet uitgevoerd (not run).
+- Tests op Windows en macOS: niet uitgevoerd (not run). Deze commit zet `tests/stdout_closed.rs` alleen achter `cfg` (`unix`, `target_os = "linux"`) zodat Windows hem kan bouwen; dat is niet op Windows bevestigd.
 - Uitkomst van de GitHub-CI-jobs voor deze commit: niet uitgevoerd, niet gelezen (not run).
 - Fuzzen, mutatietests en dekking: niet uitgevoerd (not run).
 - `THIRD-PARTY-LICENSES.html` opnieuw maken met `cargo about`: niet uitgevoerd (not run).
