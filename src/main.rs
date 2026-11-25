@@ -1,6 +1,6 @@
 //! Command-line entry point for disk-full-doctor.
 
-#![forbid(unsafe_code)]
+#![deny(unsafe_code)]
 
 use std::io::{ErrorKind, Write};
 use std::path::PathBuf;
@@ -8,6 +8,11 @@ use std::process::ExitCode;
 
 use clap::Parser;
 use disk_full_doctor::{scan, RealFsProbe, Report, Root};
+
+// The binary's only `unsafe` code: a constructor that runs before Rust reopens a
+// closed descriptor 1 as /dev/null. The library still forbids `unsafe`.
+#[allow(unsafe_code)]
+mod stdout_probe;
 
 /// Read-only report of why a disk looks full when df and du disagree.
 #[derive(Parser, Debug)]
@@ -23,6 +28,13 @@ struct Cli {
 }
 
 fn main() -> ExitCode {
+    // Rust replaces a closed descriptor 1 with /dev/null before `main`; the probe
+    // recorded before that whether it was closed.
+    let stdout_closed = stdout_probe::stdout_was_closed_at_start();
+    if stdout_closed {
+        eprintln!("disk-full-doctor: cannot write the report: standard output is closed");
+        return ExitCode::from(2);
+    }
     let cli = Cli::parse();
     let root = match root_from_cli(cli.root) {
         Ok(root) => root,

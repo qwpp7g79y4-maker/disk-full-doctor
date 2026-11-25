@@ -2,8 +2,9 @@
 //!
 //! A full standard output is exit 2 and `/dev/null` is a normal sink (exit 0).
 //!
-//! A closed standard output cannot be told apart: the Rust runtime reopens a
-//! closed descriptor 1 as `/dev/null` before `main` runs.
+//! A closed standard output is exit 2 too (Linux only). The Rust runtime reopens
+//! a closed descriptor 1 as `/dev/null` before `main`, so the binary records the
+//! state in a constructor that runs earlier.
 
 use std::path::PathBuf;
 use std::process::{Command, Output};
@@ -35,5 +36,15 @@ fn full_stdout_is_exit_2_without_a_panic() {
     let output = run_with_stdout(">/dev/full");
     assert_eq!(output.status.code(), Some(2), "{output:?}");
     let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(!stderr.contains("panicked"), "{stderr}");
+}
+
+#[cfg(target_os = "linux")]
+#[test]
+fn closed_stdout_is_exit_2_with_a_message() {
+    let output = run_with_stdout(">&-");
+    assert_eq!(output.status.code(), Some(2), "{output:?}");
+    let stderr = String::from_utf8_lossy(&output.stderr);
+    assert!(stderr.contains("standard output is closed"), "{stderr}");
     assert!(!stderr.contains("panicked"), "{stderr}");
 }
