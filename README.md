@@ -1,5 +1,7 @@
 # disk-full-doctor
 
+[![crates.io](https://img.shields.io/crates/v/disk-full-doctor.svg)](https://crates.io/crates/disk-full-doctor) [![downloads](https://img.shields.io/crates/d/disk-full-doctor.svg)](https://crates.io/crates/disk-full-doctor) [![CI](https://github.com/qwpp7g79y4-maker/disk-full-doctor/actions/workflows/ci.yml/badge.svg)](https://github.com/qwpp7g79y4-maker/disk-full-doctor/actions/workflows/ci.yml) [![PEPAI checked](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fqwpp7g79y4-maker%2Fdisk-full-doctor%2Fmain%2F.github%2Fbadge.json)](QUALITY.md) [![MSRV 1.85](https://img.shields.io/badge/MSRV-1.85-blue.svg)](https://github.com/qwpp7g79y4-maker/disk-full-doctor/blob/main/Cargo.toml) [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/qwpp7g79y4-maker/disk-full-doctor#license)
+
 English | [Nederlands](README.nl.md)
 
 Read-only diagnostic for "No space left on device" when `df` and `du`
@@ -103,6 +105,8 @@ Changes are listed in [CHANGELOG.md](CHANGELOG.md). Security reports go
 through [SECURITY.md](SECURITY.md). To send a change, follow
 [CONTRIBUTING.md](CONTRIBUTING.md). The measured state of a commit is in
 [QUALITY.md](QUALITY.md).
+
+After a release the tool is dormant: a new version appears only for a reported bug, a request, or a security problem. Security always comes first.
 
 ## License
 

@@ -1,5 +1,7 @@
 # Kwaliteit
 
+pep: 8.6
+
 [English](QUALITY.md) | Nederlands
 
 Gemeten staat van commit `4e8eb69` (volledige hash

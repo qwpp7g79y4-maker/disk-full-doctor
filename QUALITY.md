@@ -1,5 +1,7 @@
 # Quality
 
+pep: 8.6
+
 English | [Nederlands](QUALITY.nl.md)
 
 Measured state of commit `4e8eb69` (full hash

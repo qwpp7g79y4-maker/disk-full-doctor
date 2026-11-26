@@ -2,7 +2,9 @@
 
 All notable changes to this project are documented in this file.
 
-## [Unreleased]
+## [0.1.0] - 2026-10-24
+
+Changes made after 2026-10-24; the version number did not change.
 
 ### Added
 
@@ -16,7 +18,6 @@ All notable changes to this project are documented in this file.
 - `mountinfo`: a single non-UTF-8 byte in one mount point name no longer
   fails the read of the whole `mountinfo` file and blinds every mount.
 
-## [0.1.0] - 2026-10-24
 
 ### Changed
 
