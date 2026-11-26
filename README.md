@@ -49,9 +49,9 @@ target/release/disk-full-doctor
 Run it as root to let every check see everything. Without root, a check that
 cannot read a path says so instead of guessing.
 
-## Aan de slag in 5 minuten
+## Quickstart in 5 minutes
 
-De Nederlandse snelstart staat in [README.nl.md](README.nl.md).
+The Dutch quickstart is in [README.nl.md](README.nl.md).
 
 ## Usage
 
