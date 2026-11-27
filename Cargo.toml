@@ -7,7 +7,6 @@ license = "MIT OR Apache-2.0"
 authors = ["PEPAI <pep_ai@icloud.com>"]
 description = "Read-only report of why a disk looks full when df and du disagree"
 repository = "https://github.com/qwpp7g79y4-maker/disk-full-doctor"
-homepage = "https://github.com/qwpp7g79y4-maker/disk-full-doctor"
 documentation = "https://github.com/qwpp7g79y4-maker/disk-full-doctor"
 exclude = [".github/", "*-plugin/"]
 
