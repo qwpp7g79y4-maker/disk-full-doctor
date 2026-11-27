@@ -28,7 +28,7 @@ network connection, and never touches the Docker socket or CLI, `lsof`, or
 
 ## Installation
 
-The crate is not on crates.io. Build it from source with a Rust toolchain
+Build it from source with a Rust toolchain
 (1.85 or newer):
 
 ```sh

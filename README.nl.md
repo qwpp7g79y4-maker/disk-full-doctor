@@ -30,7 +30,7 @@ nooit aan.
 
 ## Installatie
 
-De crate staat niet op crates.io. Bouw hem uit de broncode met een
+Bouw hem uit de broncode met een
 Rust-toolchain (1.85 of nieuwer):
 
 ```sh
